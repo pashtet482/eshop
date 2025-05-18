@@ -1,7 +1,7 @@
-package com.DocByte.e_shop.controller;
+package com.doc_byte.eshop.controller;
 
-import com.DocByte.e_shop.model.User;
-import com.DocByte.e_shop.repository.UserRepository;
+import com.doc_byte.eshop.model.User;
+import com.doc_byte.eshop.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,15 +11,15 @@ import java.util.List;
 @RequestMapping("api/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @GetMapping
     public List<User> getAllUsers() {
-        return userRepository.findAll();
+        return userService.getAllUsers();
     }
 
     @PostMapping
     public User createUser(@RequestBody User user) {
-        return userRepository.save(user);
+        return userService.createUser(user);
     }
 }

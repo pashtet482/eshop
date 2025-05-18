@@ -1,4 +1,4 @@
-package com.DocByte.e_shop;
+package com.DocByte.eShop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -8,6 +8,7 @@ class EShopApplicationTests {
 
     @Test
     void contextLoads() {
+        //Тесты в разработке!
     }
 
 }

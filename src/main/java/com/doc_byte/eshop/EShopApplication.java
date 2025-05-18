@@ -1,4 +1,4 @@
-package com.DocByte.e_shop;
+package com.doc_byte.eshop;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
