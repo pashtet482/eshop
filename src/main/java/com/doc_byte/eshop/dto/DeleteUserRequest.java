@@ -1,7 +1,9 @@
 package com.doc_byte.eshop.dto;
 
 
+import jakarta.validation.constraints.NotBlank;
+
 public record DeleteUserRequest (
-    String username,
-    String password) {
+        @NotBlank String username,
+        @NotBlank String password) {
 }

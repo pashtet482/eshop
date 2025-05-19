@@ -1,6 +1,7 @@
 package com.doc_byte.eshop.controller;
 
 import com.doc_byte.eshop.dto.ChangeUsernameRequest;
+import com.doc_byte.eshop.dto.CreateUserRequest;
 import com.doc_byte.eshop.dto.DeleteUserRequest;
 import com.doc_byte.eshop.dto.PasswordChangeRequest;
 import com.doc_byte.eshop.model.User;
@@ -12,6 +13,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,8 +45,8 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
-        User createdUser = userService.createUser(user);
+    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest request) {
+        User createdUser = userService.createUser(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
 
@@ -67,7 +69,7 @@ public class UserController {
         if (changed) {
             return ResponseEntity.ok("Пароль успешно изменен");
         } else {
-            return ResponseEntity.badRequest().body("Неверное имя пользователя или пароль");
+            return ResponseEntity.status(401).body("Неверное имя пользователя или пароль");
         }
     }
 
@@ -86,7 +88,7 @@ public class UserController {
         if (deleted) {
             return ResponseEntity.ok("Аккаунт успешно удален");
         } else {
-            return ResponseEntity.badRequest().body("Неверный пароль");
+            return ResponseEntity.status(401).body("Неверный пароль");
         }
     }
 
@@ -102,11 +104,11 @@ public class UserController {
     })
     public ResponseEntity<String> changeUsername(@Valid @RequestBody ChangeUsernameRequest request) {
         if (!userService.userExists(request.oldUsername())) {
-            throw new com.doc_byte.eshop.exceptions.UserNotFoundException(request.oldUsername());
+            return ResponseEntity.notFound().build();
         }
 
         if (!userService.hasPermissionToChangeUsername(request.oldUsername())) {
-            throw new org.springframework.security.access.AccessDeniedException("Нет прав на изменение имени пользователя");
+            throw new AccessDeniedException("Нет прав на изменение имени пользователя");
         }
 
         boolean isUsernameChanged = userService.changeUsername(

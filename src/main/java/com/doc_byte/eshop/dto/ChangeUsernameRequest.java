@@ -1,7 +1,9 @@
 package com.doc_byte.eshop.dto;
 
 
+import jakarta.validation.constraints.NotBlank;
+
 public record ChangeUsernameRequest(
-        String oldUsername,
-        String newUsername){
+        @NotBlank String oldUsername,
+        @NotBlank String newUsername){
 }

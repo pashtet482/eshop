@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.sql.Timestamp;
 import java.time.Instant;
-import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "users")
@@ -47,6 +47,6 @@ public class User {
     private String username;
 
     @Column(name = "last_username_change")
-    private OffsetDateTime lastUsernameChange;
+    private Timestamp lastUsernameChange;
 }
 

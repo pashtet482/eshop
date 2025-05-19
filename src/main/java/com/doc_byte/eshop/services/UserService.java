@@ -1,5 +1,6 @@
 package com.doc_byte.eshop.services;
 
+import com.doc_byte.eshop.dto.CreateUserRequest;
 import com.doc_byte.eshop.exceptions.UserNotFoundException;
 import com.doc_byte.eshop.model.User;
 import com.doc_byte.eshop.repository.UserRepository;
@@ -9,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,15 +28,13 @@ public class UserService {
     }
 
     public boolean userExists(String username){
-        List<String> usernames = userRepository.findAllUsernames();
-
-        return usernames.contains(username);
+        return userRepository.existsByUsername(username);
     }
 
     public boolean hasPermissionToChangeUsername(String username) {
         User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
-        String loggedInUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+        String loggedInUsername = getCurrentUsername();
         if (!loggedInUsername.equals(username)) {
             return false;
         }
@@ -44,20 +44,21 @@ public class UserService {
     }
 
 
-    @NotNull
-    public User createUser(@NotNull User user) {
+    public User createUser(@NotNull CreateUserRequest request) {
+        User user = new User();
+        user.setUsername(request.username());
+        user.setEmail(request.email());
+        user.setPassword(encoder.encode(request.password()));
         user.setCreatedAt(Instant.now());
-        user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     public boolean changePassword(String username, String oldPassword, String newPassword) {
-        Optional<User> optionalUser = userRepository.findByUsername(username);
-        if (optionalUser.isEmpty()) return false;
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
 
-        User user = optionalUser.get();
-
-        if (!encoder.matches(oldPassword, user.getPassword())) return false;
+        if (!encoder.matches(oldPassword, user.getPassword())) {
+            return false;
+        }
 
         user.setPassword(encoder.encode(newPassword));
         userRepository.save(user);
@@ -77,21 +78,18 @@ public class UserService {
         return true;
     }
 
+    public String getCurrentUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
     public boolean changeUsername (String oldUsername, String newUsername){
-        Optional<User> optionalUser = userRepository.findByUsername(oldUsername);
+        if (!userRepository.existsByUsername(oldUsername)) return false;
+        if (userRepository.existsByUsername(newUsername)) return false;
 
-        if (optionalUser.isEmpty()) return false;
-
-        List<String> usernames = userRepository.findAllUsernames();
-
-        if(usernames.contains(newUsername)){
-            return false;
-        } else {
-            User user = optionalUser.get();
-
-            user.setUsername(newUsername);
-            userRepository.save(user);
-            return true;
-        }
+        User user = userRepository.findByUsername(oldUsername).orElseThrow(() -> new UserNotFoundException(oldUsername));
+        user.setUsername(newUsername);
+        user.setLastUsernameChange(Timestamp.from(Instant.now()));
+        userRepository.save(user);
+        return true;
     }
 }
