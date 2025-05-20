@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
@@ -45,9 +46,9 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserRequest request) {
-        User createdUser = userService.createUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    public ResponseEntity<String> createUser(@Valid @RequestBody CreateUserRequest request) {
+        userService.createUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Аккаунт успешно создан");
     }
 
     @PostMapping("/change-password")
@@ -59,18 +60,9 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Пользователь не найден"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<String> changePassword(@Valid @RequestBody PasswordChangeRequest request) {
-        boolean changed = userService.changePassword(
-                request.username(),
-                request.oldPassword(),
-                request.newPassword()
-        );
-
-        if (changed) {
-            return ResponseEntity.ok("Пароль успешно изменен");
-        } else {
-            return ResponseEntity.status(401).body("Неверное имя пользователя или пароль");
-        }
+    public ResponseEntity<String> changePassword(@Valid @RequestBody @NotNull PasswordChangeRequest request) {
+        userService.changePassword(request.username(), request.oldPassword(), request.newPassword());
+        return ResponseEntity.ok("Пароль успешно изменен");
     }
 
     @DeleteMapping("/delete-user")
@@ -82,14 +74,9 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Пользователь не найден"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<String> deleteUser(@Valid @RequestBody DeleteUserRequest request) {
-        boolean deleted = userService.deleteUser(request.username(), request.password());
-
-        if (deleted) {
-            return ResponseEntity.ok("Аккаунт успешно удален");
-        } else {
-            return ResponseEntity.status(401).body("Неверный пароль");
-        }
+    public ResponseEntity<String> deleteUser(@Valid @RequestBody @NotNull DeleteUserRequest request) {
+        userService.deleteUser(request.username(), request.password());
+        return ResponseEntity.ok("Аккаунт успешно удален");
     }
 
     @PostMapping("/update-username")
@@ -102,25 +89,11 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<String> changeUsername(@Valid @RequestBody ChangeUsernameRequest request) {
-        if (!userService.userExists(request.oldUsername())) {
-            return ResponseEntity.notFound().build();
-        }
-
+    public ResponseEntity<String> changeUsername(@Valid @RequestBody @NotNull ChangeUsernameRequest request) {
         if (!userService.hasPermissionToChangeUsername(request.oldUsername())) {
-            throw new AccessDeniedException("Нет прав на изменение имени пользователя");
+            throw new AccessDeniedException("Имя можно имзенять раз в 30 дней");
         }
-
-        boolean isUsernameChanged = userService.changeUsername(
-                request.oldUsername(),
-                request.newUsername()
-        );
-
-        if (isUsernameChanged) {
-            return ResponseEntity.ok("Имя пользователя успешно изменено");
-        } else {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Имя пользователя не изменено (уже занято)");
-        }
+        userService.changeUsername(request.oldUsername(), request.newUsername());
+        return ResponseEntity.ok("Имя пользователя успешно изменено");
     }
 }
