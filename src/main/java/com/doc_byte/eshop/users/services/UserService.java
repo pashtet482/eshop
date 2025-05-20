@@ -1,10 +1,10 @@
-package com.doc_byte.eshop.services;
+package com.doc_byte.eshop.users.services;
 
-import com.doc_byte.eshop.dto.CreateUserRequest;
+import com.doc_byte.eshop.users.model.User;
+import com.doc_byte.eshop.users.dto.CreateUserRequest;
 import com.doc_byte.eshop.exceptions.ConflictException;
 import com.doc_byte.eshop.exceptions.UserNotFoundException;
-import com.doc_byte.eshop.model.User;
-import com.doc_byte.eshop.repository.UserRepository;
+import com.doc_byte.eshop.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

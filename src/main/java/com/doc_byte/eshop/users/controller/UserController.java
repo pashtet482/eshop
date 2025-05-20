@@ -1,11 +1,11 @@
-package com.doc_byte.eshop.controller;
+package com.doc_byte.eshop.users.controller;
 
-import com.doc_byte.eshop.dto.ChangeUsernameRequest;
-import com.doc_byte.eshop.dto.CreateUserRequest;
-import com.doc_byte.eshop.dto.DeleteUserRequest;
-import com.doc_byte.eshop.dto.PasswordChangeRequest;
-import com.doc_byte.eshop.model.User;
-import com.doc_byte.eshop.services.UserService;
+import com.doc_byte.eshop.users.model.User;
+import com.doc_byte.eshop.users.services.UserService;
+import com.doc_byte.eshop.users.dto.ChangeUsernameRequest;
+import com.doc_byte.eshop.users.dto.CreateUserRequest;
+import com.doc_byte.eshop.users.dto.DeleteUserRequest;
+import com.doc_byte.eshop.users.dto.PasswordChangeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;

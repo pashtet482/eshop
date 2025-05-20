@@ -1,6 +1,6 @@
-package com.doc_byte.eshop.repository;
+package com.doc_byte.eshop.users.repository;
 
-import com.doc_byte.eshop.model.User;
+import com.doc_byte.eshop.users.model.User;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.stereotype.Repository;
 

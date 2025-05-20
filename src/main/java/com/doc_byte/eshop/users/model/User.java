@@ -1,4 +1,4 @@
-package com.doc_byte.eshop.model;
+package com.doc_byte.eshop.users.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

@@ -1,4 +1,4 @@
-package com.doc_byte.eshop.dto;
+package com.doc_byte.eshop.users.dto;
 
 
 import jakarta.validation.constraints.NotBlank;

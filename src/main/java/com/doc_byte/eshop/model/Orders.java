@@ -1,5 +1,6 @@
 package com.doc_byte.eshop.model;
 
+import com.doc_byte.eshop.users.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -11,7 +12,8 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

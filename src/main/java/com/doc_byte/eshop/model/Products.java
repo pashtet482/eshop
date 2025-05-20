@@ -10,7 +10,8 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.math.BigDecimal;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
