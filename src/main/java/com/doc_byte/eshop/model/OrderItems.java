@@ -1,5 +1,6 @@
 package com.doc_byte.eshop.model;
 
+import com.doc_byte.eshop.products.model.Product;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -29,7 +30,7 @@ public class OrderItems {
     @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.SET_NULL)
     @JoinColumn(name = "product_id")
-    private Products product;
+    private Product product;
 
     @NotNull
     @Column(name = "quantity", nullable = false)

@@ -37,7 +37,7 @@ public class UserController {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 
-    @PostMapping
+    @PostMapping("/create-user")
     @Operation(summary = "Создание пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Пользователь успешно создан"),
@@ -51,7 +51,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Аккаунт успешно создан");
     }
 
-    @PostMapping("/change-password")
+    @PatchMapping("/change-password")
     @Operation(summary = "Смена пароля")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Пароль успешно изменен"),
@@ -79,7 +79,7 @@ public class UserController {
         return ResponseEntity.ok("Аккаунт успешно удален");
     }
 
-    @PostMapping("/update-username")
+    @PatchMapping("/update-username")
     @Operation(summary = "Смена имени пользователя")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Имя пользователя успешно изменено"),
