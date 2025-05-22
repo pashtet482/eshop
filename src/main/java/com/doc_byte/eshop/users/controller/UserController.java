@@ -1,11 +1,7 @@
 package com.doc_byte.eshop.users.controller;
 
-import com.doc_byte.eshop.users.model.User;
+import com.doc_byte.eshop.users.dto.*;
 import com.doc_byte.eshop.users.service.UserService;
-import com.doc_byte.eshop.users.dto.ChangeUsernameRequest;
-import com.doc_byte.eshop.users.dto.CreateUserRequest;
-import com.doc_byte.eshop.users.dto.DeleteUserRequest;
-import com.doc_byte.eshop.users.dto.PasswordChangeRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -33,7 +29,7 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<List<GetAllUsers>> getAllUsers() {
         return ResponseEntity.ok(userService.getAllUsers());
     }
 

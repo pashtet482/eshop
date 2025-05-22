@@ -1,6 +1,6 @@
 package com.doc_byte.eshop.categories.repository;
 
-import com.doc_byte.eshop.model.Category;
+import com.doc_byte.eshop.categories.model.Category;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

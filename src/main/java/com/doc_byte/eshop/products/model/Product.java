@@ -1,6 +1,6 @@
 package com.doc_byte.eshop.products.model;
 
-import com.doc_byte.eshop.model.Category;
+import com.doc_byte.eshop.categories.model.Category;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;

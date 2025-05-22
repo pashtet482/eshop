@@ -1,8 +1,8 @@
 package com.doc_byte.eshop.products.controller;
 
 import com.doc_byte.eshop.products.dto.CreateProductRequest;
+import com.doc_byte.eshop.products.dto.GetAllProducts;
 import com.doc_byte.eshop.products.dto.UpdateProductRequest;
-import com.doc_byte.eshop.products.model.Product;
 import com.doc_byte.eshop.products.service.ProductsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -37,6 +37,7 @@ public class ProductsController {
     }
 
     @DeleteMapping("/delete-product/{id}")
+    @Operation(summary = "Удаление товара")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Товар успешно удален"),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
@@ -49,7 +50,8 @@ public class ProductsController {
         return ResponseEntity.ok("Товар удалён");
     }
 
-    @PutMapping("/create-product")
+    @PutMapping("/update-product/{id}")
+    @Operation(summary = "Обновление товара")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Данные успешно изменены"),
             @ApiResponse(responseCode = "400", description = "Некорректные данные"),
@@ -58,18 +60,19 @@ public class ProductsController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<String> updateProduct(@Valid @RequestBody UpdateProductRequest request) {
-        productsService.updateProduct(request);
+    public ResponseEntity<String> updateProduct(@PathVariable Long id, @Valid @RequestBody UpdateProductRequest request) {
+        productsService.updateProduct(id, request);
         return ResponseEntity.ok("Товар успешно обновлён");
     }
 
     @GetMapping("/products")
+    @Operation(summary = "Вывод всех товаров")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список тоаров получен"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<List<Product>> getAllProducts(){
+    public ResponseEntity<List<GetAllProducts>> getAllProducts(){
         return ResponseEntity.ok(productsService.getAllProducts());
     }
 }
