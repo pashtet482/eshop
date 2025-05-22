@@ -1,9 +1,9 @@
-package com.doc_byte.eshop.users.services;
+package com.doc_byte.eshop.users.service;
 
 import com.doc_byte.eshop.users.model.User;
 import com.doc_byte.eshop.users.dto.CreateUserRequest;
 import com.doc_byte.eshop.exceptions.ConflictException;
-import com.doc_byte.eshop.exceptions.UserNotFoundException;
+import com.doc_byte.eshop.exceptions.NotFoundException;
 import com.doc_byte.eshop.users.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -27,7 +27,7 @@ public class UserService {
     }
 
     public boolean hasPermissionToChangeUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("Пользователь %s не найден".formatted(username)));
 
         Timestamp lastChange = user.getLastUsernameChange();
         return lastChange == null || lastChange.toLocalDateTime().isBefore(LocalDateTime.now().minusDays(30));
@@ -45,7 +45,7 @@ public class UserService {
     }
 
     public void changePassword(String username, String oldPassword, String newPassword) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("Пользователь %s не найден".formatted(username)));
 
         if (!encoder.matches(oldPassword, user.getPassword())) {
             throw new ConflictException("Старый пароль не совпадает");
@@ -56,7 +56,7 @@ public class UserService {
     }
 
     public void deleteUser(String username, String password) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException("Пользователь %s не найден".formatted(username)));
 
         if (!encoder.matches(password, user.getPassword())) {
             throw new ConflictException("Пароль неверный");
@@ -70,7 +70,7 @@ public class UserService {
             throw new ConflictException("Пользователь с таким именем уже существует");
         }
 
-        User user = userRepository.findByUsername(oldUsername).orElseThrow(() -> new UserNotFoundException(oldUsername));
+        User user = userRepository.findByUsername(oldUsername).orElseThrow(() -> new NotFoundException("Пользователь %s не найден".formatted(oldUsername)));
 
         user.setUsername(newUsername);
         user.setLastUsernameChange(Timestamp.from(Instant.now()));
@@ -78,15 +78,6 @@ public class UserService {
     }
 
     private void validateCreateUserRequest(@NotNull CreateUserRequest request) {
-        if (request.username() == null || request.username().isBlank()) {
-            throw new IllegalArgumentException("Введите имя");
-        }
-        if (request.email() == null || request.email().isBlank()) {
-            throw new IllegalArgumentException("Введите email");
-        }
-        if (request.password() == null || request.password().isBlank()) {
-            throw new IllegalArgumentException("Введите пароль");
-        }
         if (userRepository.existsByUsername(request.username())) {
             throw new ConflictException("Пользователь с таким именем уже существует");
         }

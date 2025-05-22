@@ -2,6 +2,7 @@ package com.doc_byte.eshop.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,8 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
-    private Integer id;
+    @Positive(message = "ID категории должен быть положительным числом")
+    private Long id;
 
     @Size(max = 100)
     @NotNull

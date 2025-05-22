@@ -1,20 +1,17 @@
 package com.doc_byte.eshop.products.dto;
 
-import com.doc_byte.eshop.model.Category;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 
-public record CreateProductRequest(
+public record UpdateProductRequest(
+        @NotNull Long id,
         @NotBlank String name,
         String description,
         @NotNull @Positive BigDecimal price,
         String imageURL,
-        @PositiveOrZero int stockQuantity,
-        @NotNull @Valid Category category
+        @Positive int stockQuantity,
+        @NotNull Long categoryId
 ) {}
-

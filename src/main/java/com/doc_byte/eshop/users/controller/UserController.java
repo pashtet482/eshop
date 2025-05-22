@@ -1,7 +1,7 @@
 package com.doc_byte.eshop.users.controller;
 
 import com.doc_byte.eshop.users.model.User;
-import com.doc_byte.eshop.users.services.UserService;
+import com.doc_byte.eshop.users.service.UserService;
 import com.doc_byte.eshop.users.dto.ChangeUsernameRequest;
 import com.doc_byte.eshop.users.dto.CreateUserRequest;
 import com.doc_byte.eshop.users.dto.DeleteUserRequest;
