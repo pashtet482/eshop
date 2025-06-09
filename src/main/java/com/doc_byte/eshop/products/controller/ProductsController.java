@@ -27,7 +27,7 @@ public class ProductsController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Товар успешно добавлен"),
             @ApiResponse(responseCode = "400", description = "Некорректные данные товара"),
-            @ApiResponse(responseCode = "409", description = "Товарн с таким названием уже существует"),
+            @ApiResponse(responseCode = "409", description = "Товар с таким названием уже существует"),
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
