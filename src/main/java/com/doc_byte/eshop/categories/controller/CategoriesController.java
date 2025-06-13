@@ -47,7 +47,7 @@ public class CategoriesController
         return ResponseEntity.status(HttpStatus.OK).body("Категория успешно удалена");
     }
 
-    @PutMapping("/change-categoy-name")
+    @PutMapping("/change-category-name")
     @Operation(summary = "Изнение названия категории")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Категоия успешно обновлена"),

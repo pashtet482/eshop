@@ -1,4 +1,4 @@
-package com.doc_byte.eshop.model;
+package com.doc_byte.eshop.orders.model;
 
 import com.doc_byte.eshop.users.model.User;
 import jakarta.persistence.*;
