@@ -5,10 +5,12 @@ import com.doc_byte.eshop.orders.service.OrdersService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,9 +29,8 @@ public class OrdersController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<String> createOrder(CreateOrderDTO request){
+    public ResponseEntity<String> createOrder(@Valid @RequestBody CreateOrderDTO request){
         ordersService.createOrder(request);
-
         return ResponseEntity.status(HttpStatus.OK).body("Заказ успешно оформлен");
     }
 }
