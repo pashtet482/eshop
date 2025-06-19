@@ -10,7 +10,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    //Временный метод для отключения авторизации. Перед сдачей удалить!
+    //TODO Временный метод для отключения авторизации. Перед сдачей удалить!
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth

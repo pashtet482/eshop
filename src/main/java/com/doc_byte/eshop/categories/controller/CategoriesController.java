@@ -1,7 +1,7 @@
 package com.doc_byte.eshop.categories.controller;
 
 
-import com.doc_byte.eshop.categories.dto.CategoryRequest;
+import com.doc_byte.eshop.categories.dto.CategoryNameRequest;
 import com.doc_byte.eshop.categories.dto.ChangeNameRequest;
 import com.doc_byte.eshop.categories.service.CategoriesService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/categories")
@@ -29,7 +31,7 @@ public class CategoriesController
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<String> createCategory(@Valid @RequestBody CategoryRequest request){
+    public ResponseEntity<String> createCategory(@Valid @RequestBody CategoryNameRequest request){
         categoriesService.createCategory(request);
         return ResponseEntity.status(HttpStatus.CREATED).body("Категория успешно добавлена");
     }
@@ -42,12 +44,12 @@ public class CategoriesController
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<String> deleteCategory(@Valid @RequestBody CategoryRequest request){
+    public ResponseEntity<String> deleteCategory(@Valid @RequestBody CategoryNameRequest request){
         categoriesService.deleteCategory(request);
         return ResponseEntity.status(HttpStatus.OK).body("Категория успешно удалена");
     }
 
-    @PutMapping("/change-categoy-name")
+    @PutMapping("/change-category-name")
     @Operation(summary = "Изнение названия категории")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Категоия успешно обновлена"),
@@ -58,5 +60,17 @@ public class CategoriesController
     public ResponseEntity<String> changeCategoryName(@Valid @RequestBody ChangeNameRequest request){
         categoriesService.changeCategoryName(request);
         return ResponseEntity.status(HttpStatus.OK).body("Категория успешно обновлена");
+    }
+
+    @GetMapping("/get-all-categories")
+    @Operation(summary = "Вывод всех категорий")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Данные успешно выведены"),
+            @ApiResponse(responseCode = "400", description = "Некорректные данные"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    public ResponseEntity<List<CategoryNameRequest>> getAllCategories(){
+        return ResponseEntity.ok(categoriesService.getAllCategories());
     }
 }

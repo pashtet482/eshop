@@ -1,8 +1,9 @@
 package com.doc_byte.eshop.categories.service;
 
 
-import com.doc_byte.eshop.categories.dto.CategoryRequest;
+import com.doc_byte.eshop.categories.dto.CategoryNameRequest;
 import com.doc_byte.eshop.categories.dto.ChangeNameRequest;
+import com.doc_byte.eshop.categories.dto.mapper.CategoriesMapper;
 import com.doc_byte.eshop.categories.model.Category;
 import com.doc_byte.eshop.categories.repository.CategoryRepository;
 import com.doc_byte.eshop.exceptions.ConflictException;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -19,7 +21,7 @@ public class CategoriesService {
 
     private final CategoryRepository categoryRepository;
 
-    public void createCategory(@NotNull CategoryRequest request){
+    public void createCategory(@NotNull CategoryNameRequest request){
         Optional<Category> categoryCheck = categoryRepository.findByName(request.name());
 
         if (categoryCheck.isPresent()) throw new ConflictException("Категория уже существует");
@@ -29,7 +31,7 @@ public class CategoriesService {
         categoryRepository.save(category);
     }
 
-    public void deleteCategory(@NotNull CategoryRequest request){
+    public void deleteCategory(@NotNull CategoryNameRequest request){
         Category category = categoryRepository.findByName(request.name())
                 .orElseThrow(() -> new NotFoundException("Категория не найдена"));
 
@@ -47,6 +49,12 @@ public class CategoriesService {
 
         category.setName(request.newName());
         categoryRepository.save(category);
+    }
+
+    public List<CategoryNameRequest> getAllCategories(){
+        return categoryRepository.findAll().stream()
+                .map(CategoriesMapper::nameOnly)
+                .toList();
     }
 }
 
