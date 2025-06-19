@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
     private @NotNull Map<String, Object> buildResponse(@NotNull HttpStatus status, String message) {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", Instant.now().toString());
-        body.put("status", status.value());
+        body.put("newStatus", status.value());
         body.put("error", status.getReasonPhrase());
         body.put("message", message);
         return body;

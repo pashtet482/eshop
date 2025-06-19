@@ -2,6 +2,7 @@ package com.doc_byte.eshop.orders.service;
 
 import com.doc_byte.eshop.exceptions.ConflictException;
 import com.doc_byte.eshop.exceptions.NotFoundException;
+import com.doc_byte.eshop.orders.dto.ChangeStatusDTO;
 import com.doc_byte.eshop.orders.dto.CreateOrderDTO;
 import com.doc_byte.eshop.orders.dto.OrderItemsDTO;
 import com.doc_byte.eshop.orders.model.OrderItems;
@@ -23,6 +24,8 @@ import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
 
+import static com.doc_byte.eshop.orders.model.OrderStatus.*;
+
 @Service
 @RequiredArgsConstructor
 public class OrdersService {
@@ -38,8 +41,7 @@ public class OrdersService {
         order.setUser(userRepository.findById(request.userId())
                 .orElseThrow(() -> new NotFoundException("Пользователь не найден")));
         order.setCreatedAt(Instant.now());
-        order.setStatus("PENDING");
-
+        order.setStatus(PENDING);
         order.setTotalPrice(BigDecimal.valueOf(0.0));
         order = orderRepository.save(order);
 
@@ -85,8 +87,26 @@ public class OrdersService {
         String filePath = "receipts/order_" + order.getId() + ".pdf";
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             fos.write(pdf);
+            order.setReceiptPath(filePath);
+            orderRepository.save(order);
         } catch (IOException e) {
             throw new RuntimeException("Ошибка при сохранении чека", e);
         }
+    }
+
+    public void changeStatus(@NotNull ChangeStatusDTO request){
+        Orders order = orderRepository.findById(request.id())
+                .orElseThrow(() -> new NotFoundException("Заказ не найден"));
+
+        order.setStatus(request.status());
+        orderRepository.save(order);
+    }
+
+    public byte[] generateReceipt(Long orderId) {
+        Orders order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new NotFoundException("Заказ не найден"));
+
+        List<OrderItems> items = orderItemsRepository.findAllByOrder(order);
+        return receiptPdfGenerator.generate(order, items);
     }
 }

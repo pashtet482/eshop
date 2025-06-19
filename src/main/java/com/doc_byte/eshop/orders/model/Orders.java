@@ -3,7 +3,6 @@ package com.doc_byte.eshop.orders.model;
 import com.doc_byte.eshop.users.model.User;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -28,10 +27,10 @@ public class Orders {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Size(max = 20)
     @NotNull
-    @Column(name = "status", nullable = false, length = 20)
-    private String status;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false)
+    private OrderStatus status;
 
     @Column(name = "created_at")
     private Instant createdAt;
@@ -39,4 +38,7 @@ public class Orders {
     @NotNull
     @Column(name = "total_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalPrice;
+
+    @Column(name = "receipt_path")
+    private String receiptPath;
 }
