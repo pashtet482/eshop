@@ -14,6 +14,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -91,5 +92,24 @@ public class UserController {
         }
         userService.changeUsername(request.oldUsername(), request.newUsername());
         return ResponseEntity.ok("Имя пользователя успешно изменено");
+    }
+
+    @PostMapping("/login")
+    @Operation(summary = "Вход в аккаунт")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Успешный вход, возвращает токен и данные пользователя"),
+            @ApiResponse(responseCode = "400", description = "Некорректный запрос (неверный формат email/пароля)"),
+            @ApiResponse(responseCode = "401", description = "Неверные учетные данные (email или пароль)"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен (пользователь заблокирован или нет прав)"),
+            @ApiResponse(responseCode = "404", description = "Пользователь с указанным email не найден"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO){
+        boolean access = userService.login(loginDTO);
+
+        if (access) {
+            return ResponseEntity.ok(Map.of("email", loginDTO.email()));
+        }
+        return ResponseEntity.status(400).body(Map.of("NaN", "NaN"));
     }
 }

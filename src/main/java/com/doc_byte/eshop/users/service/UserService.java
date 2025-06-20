@@ -1,6 +1,7 @@
 package com.doc_byte.eshop.users.service;
 
 import com.doc_byte.eshop.users.dto.GetAllUsers;
+import com.doc_byte.eshop.users.dto.LoginDTO;
 import com.doc_byte.eshop.users.dto.mapper.UserMapper;
 import com.doc_byte.eshop.users.model.User;
 import com.doc_byte.eshop.users.dto.CreateUserRequest;
@@ -90,5 +91,13 @@ public class UserService {
         if (userRepository.existsByEmail(request.email())) {
             throw new ConflictException("Пользователь с таким email уже существует");
         }
+    }
+
+    public boolean login(@NotNull LoginDTO loginDTO){
+        User user = userRepository.findByEmail(loginDTO.email())
+                .orElseThrow(() -> new NotFoundException("Аккаунт с таким email не найден"));
+
+        String passord = loginDTO.password();
+        return encoder.matches(passord, user.getPassword());
     }
 }

@@ -87,7 +87,6 @@ public class OrdersService {
         String filePath = "receipts/order_" + order.getId() + ".pdf";
         try (FileOutputStream fos = new FileOutputStream(filePath)) {
             fos.write(pdf);
-            order.setReceiptPath(filePath);
             orderRepository.save(order);
         } catch (IOException e) {
             throw new RuntimeException("Ошибка при сохранении чека", e);

@@ -38,7 +38,4 @@ public class Orders {
     @NotNull
     @Column(name = "total_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal totalPrice;
-
-    @Column(name = "receipt_path")
-    private String receiptPath;
 }
