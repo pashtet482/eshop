@@ -1,6 +1,7 @@
 package com.doc_byte.eshop.categories.controller;
 
 
+import com.doc_byte.eshop.categories.dto.CategoryDTO;
 import com.doc_byte.eshop.categories.dto.CategoryNameRequest;
 import com.doc_byte.eshop.categories.dto.ChangeNameRequest;
 import com.doc_byte.eshop.categories.service.CategoriesService;
@@ -70,7 +71,7 @@ public class CategoriesController
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<List<CategoryNameRequest>> getAllCategories(){
+    public ResponseEntity<List<CategoryDTO>> getAllCategories(){
         return ResponseEntity.ok(categoriesService.getAllCategories());
     }
 }

@@ -1,9 +1,9 @@
 package com.doc_byte.eshop.categories.service;
 
 
+import com.doc_byte.eshop.categories.dto.CategoryDTO;
 import com.doc_byte.eshop.categories.dto.CategoryNameRequest;
 import com.doc_byte.eshop.categories.dto.ChangeNameRequest;
-import com.doc_byte.eshop.categories.dto.mapper.CategoriesMapper;
 import com.doc_byte.eshop.categories.model.Category;
 import com.doc_byte.eshop.categories.repository.CategoryRepository;
 import com.doc_byte.eshop.exceptions.ConflictException;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -51,10 +52,16 @@ public class CategoriesService {
         categoryRepository.save(category);
     }
 
-    public List<CategoryNameRequest> getAllCategories(){
-        return categoryRepository.findAll().stream()
-                .map(CategoriesMapper::nameOnly)
+    public List<CategoryDTO> getAllCategories(){
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream()
+                .map(this::convertToDTO)
                 .toList();
+    }
+
+    @NotNull
+    private CategoryDTO convertToDTO(@NotNull Category category) {
+        return new CategoryDTO(category.getId(), category.getName());
     }
 }
 
