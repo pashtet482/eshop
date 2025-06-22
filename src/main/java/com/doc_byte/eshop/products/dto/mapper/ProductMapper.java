@@ -1,6 +1,6 @@
 package com.doc_byte.eshop.products.dto.mapper;
 
-import com.doc_byte.eshop.categories.dto.CategoryIdDTO;
+import com.doc_byte.eshop.categories.dto.CategoryDTO;
 import com.doc_byte.eshop.products.dto.GetAllProducts;
 import com.doc_byte.eshop.products.model.Product;
 import org.jetbrains.annotations.NotNull;
@@ -15,8 +15,9 @@ public class ProductMapper {
                 product.getPrice(),
                 product.getImageUrl(),
                 product.getStockQuantity(),
-                new CategoryIdDTO(
-                        product.getCategory().getId()
+                new CategoryDTO(
+                        product.getCategory().getId(),
+                        product.getCategory().getName()
                 )
         );
     }

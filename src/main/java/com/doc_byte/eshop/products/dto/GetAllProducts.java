@@ -1,6 +1,6 @@
 package com.doc_byte.eshop.products.dto;
 
-import com.doc_byte.eshop.categories.dto.CategoryIdDTO;
+import com.doc_byte.eshop.categories.dto.CategoryDTO;
 
 import java.math.BigDecimal;
 
@@ -13,5 +13,5 @@ public record GetAllProducts(
         BigDecimal price,
         String imageUrl,
         Integer stockQuantity,
-        CategoryIdDTO category
+        CategoryDTO category
 ) {}
