@@ -12,8 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import javafx.util.Pair;
 
 import java.sql.Timestamp;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -33,14 +35,21 @@ public class UserService {
                 .toList();
     }
 
-    public boolean hasPermissionToChangeUsername(String username) {
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND_TEMPLATE, username)));
+    public Pair<Integer, User> getDaysUntilUsernameChangeAllowed(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException(String.format(USER_NOT_FOUND_TEMPLATE, username)));
 
         Timestamp lastChange = user.getLastUsernameChange();
-        return lastChange == null || lastChange.toLocalDateTime().isBefore(LocalDateTime.now().minusDays(30));
+        if (lastChange == null) return new Pair<>(0, user);
+
+        LocalDateTime nextAllowedDate = lastChange.toLocalDateTime().plusDays(30);
+        long daysLeft = Duration.between(LocalDateTime.now(), nextAllowedDate).toDays();
+
+        return new Pair<>((int) Math.max(0, daysLeft), user);
     }
 
-    public void createUser(@NotNull CreateUserRequest request) {
+
+    public User createUser(@NotNull CreateUserRequest request) {
         validateCreateUserRequest(request);
 
         User user = new User();
@@ -49,6 +58,7 @@ public class UserService {
         user.setPassword(encoder.encode(request.password()));
         user.setCreatedAt(Instant.now());
         userRepository.save(user);
+        return user;
     }
 
     public void changePassword(String username, String oldPassword, String newPassword) {
@@ -93,11 +103,14 @@ public class UserService {
         }
     }
 
-    public boolean login(@NotNull LoginDTO loginDTO){
+    public User login(@NotNull LoginDTO loginDTO){
         User user = userRepository.findByEmail(loginDTO.email())
                 .orElseThrow(() -> new NotFoundException("Аккаунт с таким email не найден"));
 
-        String passord = loginDTO.password();
-        return encoder.matches(passord, user.getPassword());
+        String password = loginDTO.password();
+        if (encoder.matches(password, user.getPassword())){
+            return user;
+        }
+        return null;
     }
 }

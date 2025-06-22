@@ -134,6 +134,11 @@
             <version>7.2.5</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>21</version>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,11 +1,13 @@
 package com.doc_byte.eshop.users.controller;
 
 import com.doc_byte.eshop.users.dto.*;
+import com.doc_byte.eshop.users.model.User;
 import com.doc_byte.eshop.users.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
+import javafx.util.Pair;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
@@ -43,9 +45,16 @@ public class UserController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<String> createUser(@Valid @RequestBody CreateUserRequest request) {
-        userService.createUser(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("Аккаунт успешно создан");
+    public ResponseEntity<Map<String, Object>> createUser(@Valid @RequestBody CreateUserRequest request) {
+        User user = userService.createUser(request);
+
+        if (user != null) {
+            return ResponseEntity.ok(Map.of(
+                    "username", user.getUsername(),
+                    "isAdmin", user.getRole()
+            ));
+        }
+        return ResponseEntity.status(400).body(Map.of("error", "Неверный логин или пароль"));
     }
 
     @PatchMapping("/change-password")
@@ -87,9 +96,15 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
     public ResponseEntity<String> changeUsername(@Valid @RequestBody @NotNull ChangeUsernameRequest request) {
-        if (!userService.hasPermissionToChangeUsername(request.oldUsername())) {
-            throw new AccessDeniedException("Имя можно имзенять раз в 30 дней");
+        Pair<Integer, User> result = userService.getDaysUntilUsernameChangeAllowed(request.oldUsername());
+        int daysLeft = result.getKey();
+
+        if (daysLeft > 0) {
+            throw new AccessDeniedException(
+                    String.format("Имя можно изменить только через %d дней", daysLeft)
+            );
         }
+
         userService.changeUsername(request.oldUsername(), request.newUsername());
         return ResponseEntity.ok("Имя пользователя успешно изменено");
     }
@@ -104,12 +119,36 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Пользователь с указанным email не найден"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO){
-        boolean access = userService.login(loginDTO);
+    public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDTO loginDTO){
+        User user = userService.login(loginDTO);
 
-        if (access) {
-            return ResponseEntity.ok(Map.of("email", loginDTO.email()));
+        if (user != null) {
+            return ResponseEntity.ok(Map.of(
+                    "username", user.getUsername(),
+                    "isAdmin", user.getRole()
+            ));
         }
-        return ResponseEntity.status(400).body(Map.of("NaN", "NaN"));
+        return ResponseEntity.status(400).body(Map.of("error", "Неверный логин или пароль"));
+    }
+
+    @GetMapping("/profile-{username}")
+    @Operation(summary = "Вывод данных о пользователе")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Дааные выведены"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    public ResponseEntity<Map<String, Object>> userInfo(@PathVariable String username, @NotNull UserInfoDTO infoDTO){
+        Pair<Integer, User> result = userService.getDaysUntilUsernameChangeAllowed(username);
+
+        int daysLeft = result.getKey();
+        User user = result.getValue();
+
+        return ResponseEntity.ok(Map.of(
+                "username", user.getUsername(),
+                "email", user.getEmail(),
+                "Creation date", user.getCreatedAt(),
+                "Days to change username", daysLeft
+        ));
     }
 }
