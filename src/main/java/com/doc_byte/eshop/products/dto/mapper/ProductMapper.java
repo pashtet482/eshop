@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class ProductMapper {
     public GetAllProducts toDto(@NotNull Product product) {
         return new GetAllProducts(
+                product.getId(),
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),

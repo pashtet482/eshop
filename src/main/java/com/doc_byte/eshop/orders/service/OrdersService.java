@@ -2,9 +2,11 @@ package com.doc_byte.eshop.orders.service;
 
 import com.doc_byte.eshop.exceptions.ConflictException;
 import com.doc_byte.eshop.exceptions.NotFoundException;
+import com.doc_byte.eshop.orders.dto.AllOrders;
 import com.doc_byte.eshop.orders.dto.ChangeStatusDTO;
 import com.doc_byte.eshop.orders.dto.CreateOrderDTO;
 import com.doc_byte.eshop.orders.dto.OrderItemsDTO;
+import com.doc_byte.eshop.orders.dto.mapper.OrderMapper;
 import com.doc_byte.eshop.orders.model.OrderItems;
 import com.doc_byte.eshop.orders.model.Orders;
 import com.doc_byte.eshop.orders.repository.OrderItemsRepository;
@@ -35,6 +37,7 @@ public class OrdersService {
     private final ProductsRepository productsRepository;
     private final OrderItemsRepository orderItemsRepository;
     private final ReceiptPdfGenerator receiptPdfGenerator;
+    private final OrderMapper orderMapper;
 
     public void createOrder(@NotNull CreateOrderDTO request){
         Orders order = new Orders();
@@ -107,5 +110,11 @@ public class OrdersService {
 
         List<OrderItems> items = orderItemsRepository.findAllByOrder(order);
         return receiptPdfGenerator.generate(order, items);
+    }
+
+    public List<AllOrders> userOrders(Long id){
+        return orderRepository.findByUser_Id(id).stream()
+                .map(orderMapper::toDTO)
+                .toList();
     }
 }

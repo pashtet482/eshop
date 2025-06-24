@@ -124,6 +124,7 @@ public class UserController {
 
         if (user != null) {
             return ResponseEntity.ok(Map.of(
+                    "userId", user.getId(),
                     "username", user.getUsername(),
                     "isAdmin", user.getRole()
             ));

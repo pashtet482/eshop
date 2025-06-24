@@ -8,6 +8,7 @@ import java.math.BigDecimal;
  * DTO for {@link com.doc_byte.eshop.products.model.Product}
  */
 public record GetAllProducts(
+        Long id,
         String name,
         String description,
         BigDecimal price,

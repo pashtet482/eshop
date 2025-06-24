@@ -1,5 +1,6 @@
 package com.doc_byte.eshop.orders.controller;
 
+import com.doc_byte.eshop.orders.dto.AllOrders;
 import com.doc_byte.eshop.orders.dto.ChangeStatusDTO;
 import com.doc_byte.eshop.orders.dto.CreateOrderDTO;
 import com.doc_byte.eshop.orders.service.OrdersService;
@@ -13,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
@@ -62,5 +65,16 @@ public class OrdersController {
         headers.setContentDispositionFormData("attachment", "receipt_order_" + id + ".pdf");
 
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}")
+    @Operation(summary = "Вывод заказов пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Данные успешно выведены"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    public ResponseEntity<List<AllOrders>> userOrders(@PathVariable Long userId){
+        return ResponseEntity.ok(ordersService.userOrders(userId));
     }
 }
