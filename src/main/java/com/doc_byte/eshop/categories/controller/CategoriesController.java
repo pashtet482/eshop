@@ -37,19 +37,6 @@ public class CategoriesController
         return ResponseEntity.status(HttpStatus.CREATED).body("Категория успешно добавлена");
     }
 
-    @DeleteMapping("/delete-category")
-    @Operation(summary = "Удаление категории")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Категоия успешно удалена"),
-            @ApiResponse(responseCode = "400", description = "Некорректные данные"),
-            @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
-    })
-    public ResponseEntity<String> deleteCategory(@Valid @RequestBody CategoryNameRequest request){
-        categoriesService.deleteCategory(request);
-        return ResponseEntity.status(HttpStatus.OK).body("Категория успешно удалена");
-    }
-
     @PutMapping("/change-category-name")
     @Operation(summary = "Изнение названия категории")
     @ApiResponses(value = {

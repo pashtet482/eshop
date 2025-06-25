@@ -32,13 +32,6 @@ public class CategoriesService {
         categoryRepository.save(category);
     }
 
-    public void deleteCategory(@NotNull CategoryNameRequest request){
-        Category category = categoryRepository.findByName(request.name())
-                .orElseThrow(() -> new NotFoundException("Категория не найдена"));
-
-        categoryRepository.delete(category);
-    }
-
     public void changeCategoryName(@NotNull ChangeNameRequest request){
         Category category = categoryRepository.findByName(request.oldName())
                 .orElseThrow(() -> new NotFoundException("Категория не найдена"));

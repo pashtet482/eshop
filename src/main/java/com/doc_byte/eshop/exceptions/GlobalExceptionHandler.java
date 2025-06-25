@@ -72,6 +72,6 @@ public class GlobalExceptionHandler {
         log.error("Внутренняя ошибка сервера", ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage()));
+                .body(buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Внутреняя ошибка сервера"));
     }
 }

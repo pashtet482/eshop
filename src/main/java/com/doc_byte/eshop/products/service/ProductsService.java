@@ -19,9 +19,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,12 +58,7 @@ public class ProductsService {
         }
     }
 
-    public void deleteProduct(@NotNull Long id){
-        Product product = productsRepository.findById(id).orElseThrow(() -> new NotFoundException("Товар не найден"));
-        productsRepository.delete(product);
-    }
-
-    public void updateProduct(Long id, @NotNull UpdateProductRequest request) {
+    public Product updateProduct(Long id, @NotNull UpdateProductRequest request) {
         Product product = productsRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Товар не найден"));
 
@@ -79,7 +76,7 @@ public class ProductsService {
                 .orElseThrow(() -> new NotFoundException("Категория не найдена"));
 
         product.setCategory(category);
-        productsRepository.save(product);
+        return productsRepository.save(product);
     }
 
     public List<GetAllProducts> getAllProducts(){
@@ -88,9 +85,8 @@ public class ProductsService {
                 .toList();
     }
 
-    public ResponseEntity<String> uploadProductImage(@NotNull MultipartFile file){
+    public ResponseEntity<String> uploadProductImage(@NotNull MultipartFile file) {
         if (file.isEmpty()) {
-            System.out.println(">>> Файл пустой");
             return ResponseEntity.badRequest().body("Файл пустой");
         }
 
@@ -98,18 +94,17 @@ public class ProductsService {
             String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
             Path savePath = Paths.get("uploads/products", filename);
 
-            System.out.println(">>> Пытаемся создать путь: " + savePath.toAbsolutePath());
-
             Files.createDirectories(savePath.getParent());
-            file.transferTo(savePath.toFile());
+            try (InputStream inputStream = file.getInputStream()) {
+                Files.copy(inputStream, savePath, StandardCopyOption.REPLACE_EXISTING);
+            }
 
             String relativeUrl = "uploads/products/" + filename;
-            System.out.println(">>> Загружено успешно: " + relativeUrl);
 
             return ResponseEntity.ok(relativeUrl);
         } catch (IOException e) {
-            e.printStackTrace();  // Покажет, ЧТО именно сломалось
             return ResponseEntity.status(500).body("Ошибка загрузки");
         }
     }
+
 }

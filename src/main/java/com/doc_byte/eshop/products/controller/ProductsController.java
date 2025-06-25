@@ -4,6 +4,7 @@ import com.doc_byte.eshop.orders.service.OrdersService;
 import com.doc_byte.eshop.products.dto.CreateProductRequest;
 import com.doc_byte.eshop.products.dto.GetAllProducts;
 import com.doc_byte.eshop.products.dto.UpdateProductRequest;
+import com.doc_byte.eshop.products.model.Product;
 import com.doc_byte.eshop.products.service.ProductsService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -45,20 +46,6 @@ public class ProductsController {
         return ResponseEntity.status(HttpStatus.CREATED).body("Товар успешно добавлен");
     }
 
-    @DeleteMapping("/delete-product/{id}")
-    @Operation(summary = "Удаление товара")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Товар успешно удален"),
-            @ApiResponse(responseCode = "400", description = "Некорректные данные"),
-            @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
-            @ApiResponse(responseCode = "404", description = "Товар не найден"),
-            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
-    })
-    public ResponseEntity<String> deleteProduct(@PathVariable Long id) {
-        productsService.deleteProduct(id);
-        return ResponseEntity.ok("Товар удалён");
-    }
-
     @PutMapping("/update-product/{id}")
     @Operation(summary = "Обновление товара")
     @ApiResponses(value = {
@@ -69,9 +56,9 @@ public class ProductsController {
             @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
-    public ResponseEntity<String> updateProduct(@PathVariable Long id, @Valid @RequestBody UpdateProductRequest request) {
-        productsService.updateProduct(id, request);
-        return ResponseEntity.ok("Товар успешно обновлён");
+    public ResponseEntity<UpdateProductRequest> updateProduct(@PathVariable Long id, @Valid @RequestBody UpdateProductRequest request) {
+        Product updatedProduct = productsService.updateProduct(id, request);
+        return ResponseEntity.ok(UpdateProductRequest.from(updatedProduct));
     }
 
     @GetMapping("/products")

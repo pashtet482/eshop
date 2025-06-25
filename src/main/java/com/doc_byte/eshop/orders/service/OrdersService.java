@@ -68,7 +68,7 @@ public class OrdersService {
 
             BigDecimal price = product.getPrice();
             int quantity = item.quantity();
-            totalPrice = price.multiply(BigDecimal.valueOf(quantity));
+            totalPrice = totalPrice.add(price.multiply(BigDecimal.valueOf(quantity)));
 
             product.setStockQuantity(product.getStockQuantity() - item.quantity());
             productsRepository.save(product);
@@ -116,5 +116,10 @@ public class OrdersService {
         return orderRepository.findByUser_Id(id).stream()
                 .map(orderMapper::toDTO)
                 .toList();
+    }
+
+    public List<AllOrders> allOrders(){
+        return orderRepository.findAll().stream()
+                .map(orderMapper::toDTO).toList();
     }
 }

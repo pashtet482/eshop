@@ -35,23 +35,10 @@ public class OrderMapper {
         return new AllOrders(
                 order.getId(),
                 new UserIdDTO(order.getUser().getId()),
-                translatePending(order.getStatus()),
+                order.getStatus().toString(),
                 order.getCreatedAt(),
                 orderedProducts,
                 order.getTotalPrice()
         );
-    }
-
-    private @NotNull String translatePending(@NotNull OrderStatus status){
-        return switch (status) {
-            case SHIPPED ->
-                    "Отправлен";
-            case PAID ->
-                    "Доставлен";
-            case CANCELLED ->
-                    "Отменен";
-            default ->
-                    "Оформлен";
-        };
     }
 }

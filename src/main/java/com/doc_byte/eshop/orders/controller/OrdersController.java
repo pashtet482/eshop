@@ -77,4 +77,15 @@ public class OrdersController {
     public ResponseEntity<List<AllOrders>> userOrders(@PathVariable Long userId){
         return ResponseEntity.ok(ordersService.userOrders(userId));
     }
+
+    @GetMapping
+    @Operation(summary = "Вывод все заказазов (для админа)")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Данные успешно выведены"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    public ResponseEntity<List<AllOrders>> allOrders(){
+        return ResponseEntity.ok(ordersService.allOrders());
+    }
 }

@@ -1,5 +1,6 @@
 package com.doc_byte.eshop.users.service;
 
+import com.doc_byte.eshop.users.dto.ChangeUserRole;
 import com.doc_byte.eshop.users.dto.GetAllUsers;
 import com.doc_byte.eshop.users.dto.LoginDTO;
 import com.doc_byte.eshop.users.dto.mapper.UserMapper;
@@ -120,5 +121,13 @@ public class UserService {
             return user;
         }
         return null;
+    }
+
+    public void changeUserRole(@NotNull ChangeUserRole changeUserRole){
+        User user = userRepository.findByEmail(changeUserRole.email())
+                .orElseThrow(() -> new NotFoundException("Пользователь не найден"));
+
+        user.setRole(changeUserRole.role());
+        userRepository.save(user);
     }
 }

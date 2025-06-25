@@ -152,4 +152,17 @@ public class UserController {
                 "Days to change username", daysLeft
         ));
     }
+
+    @PutMapping("/change-role")
+    @Operation(summary = "Смена роли пользователя")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Роль изменена"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    public void changeUserRole(@RequestBody @NotNull ChangeUserRole changeUserRole){
+        System.out.println("Email: " + changeUserRole.email());
+        System.out.println("Role: " + changeUserRole.role());
+        userService.changeUserRole(changeUserRole);
+    }
 }
