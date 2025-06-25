@@ -38,11 +38,43 @@ public class ReceiptPdfGenerator {
             PdfFont font = PdfFontFactory.createFont(fontPath);
             document.setFont(font);
 
+            try {
+                String imagePath = "src/main/resources/static/logo.png";
+                com.itextpdf.layout.element.Image logo = new com.itextpdf.layout.element.Image(
+                        com.itextpdf.io.image.ImageDataFactory.create(imagePath)
+                ).scaleToFit(60, 60);
+
+                Table headerTable = new Table(new float[]{1, 4});
+                headerTable.setWidth(UnitValue.createPercentValue(100));
+
+                Cell logoCell = new Cell().add(logo)
+                        .setBorder(null)
+                        .setVerticalAlignment(com.itextpdf.layout.properties.VerticalAlignment.MIDDLE);
+                headerTable.addCell(logoCell);
+
+                Paragraph title = new Paragraph("DocByte\nинтернет-магазин техники")
+                        .setFontSize(14)
+                        .setBold()
+                        .setMargin(0)
+                        .setMultipliedLeading(1.2f);
+
+                Cell titleCell = new Cell().add(title)
+                        .setBorder(null)
+                        .setVerticalAlignment(com.itextpdf.layout.properties.VerticalAlignment.MIDDLE);
+
+                headerTable.addCell(titleCell);
+                document.add(headerTable);
+
+                document.add(new Paragraph("\n"));
+
+            } catch (Exception ignored) {
+            }
+
             Paragraph header = new Paragraph("Чек заказа #" + order.getId())
                     .setFontSize(18)
                     .setBold()
                     .setTextAlignment(TextAlignment.CENTER)
-                    .setMarginBottom(15f);
+                    .setMarginBottom(20f);
             document.add(header);
 
             ZoneId zoneId = ZoneId.of("Europe/Moscow");
@@ -55,15 +87,16 @@ public class ReceiptPdfGenerator {
                     .add("Статус: " + translatePending(order.getStatus().toString()) + "\n")
                     .add("Пользователь: " + order.getUser().getUsername())
                     .setFontSize(12)
-                    .setMarginBottom(15f);
+                    .setMarginBottom(20f);
             document.add(orderInfo);
 
             float[] columnWidths = {250F, 80F, 80F};
             Table table = new Table(columnWidths);
             table.setWidth(UnitValue.createPercentValue(100));
 
+            // Заголовки
             table.addHeaderCell(new Cell().add(new Paragraph("Товар").setBold()).setBackgroundColor(ColorConstants.LIGHT_GRAY));
-            table.addHeaderCell(new Cell().add(new Paragraph("Количество").setBold()).setBackgroundColor(ColorConstants.LIGHT_GRAY).setTextAlignment(TextAlignment.CENTER));
+            table.addHeaderCell(new Cell().add(new Paragraph("Кол-во").setBold()).setBackgroundColor(ColorConstants.LIGHT_GRAY).setTextAlignment(TextAlignment.CENTER));
             table.addHeaderCell(new Cell().add(new Paragraph("Цена, руб").setBold()).setBackgroundColor(ColorConstants.LIGHT_GRAY).setTextAlignment(TextAlignment.RIGHT));
 
             for (OrderItems item : items) {
@@ -75,14 +108,21 @@ public class ReceiptPdfGenerator {
 
             document.add(table);
 
-            document.add(new Paragraph("\n"));
+            document.add(new Paragraph("\n────────────────────────────────────\n").setTextAlignment(TextAlignment.CENTER));
 
             String totalPriceStr = String.format("%.2f", order.getTotalPrice());
             Paragraph total = new Paragraph("Итого: " + totalPriceStr + " руб")
                     .setFontSize(14)
                     .setBold()
-                    .setTextAlignment(TextAlignment.RIGHT);
+                    .setTextAlignment(TextAlignment.RIGHT)
+                    .setMarginTop(10f);
             document.add(total);
+
+            Paragraph thanks = new Paragraph("Спасибо за покупку в DocByte!")
+                    .setFontSize(12)
+                    .setTextAlignment(TextAlignment.CENTER)
+                    .setMarginTop(25f);
+            document.add(thanks);
 
             document.close();
             return out.toByteArray();
@@ -91,6 +131,7 @@ public class ReceiptPdfGenerator {
             throw new RuntimeException("Ошибка генерации PDF", e);
         }
     }
+
 
     @Contract(pure = true)
     private @NotNull String translatePending(@NotNull String status){

@@ -13,9 +13,17 @@ import com.doc_byte.eshop.products.repository.ProductsRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -78,5 +86,30 @@ public class ProductsService {
         return productsRepository.findAll().stream()
                 .map(productMapper::toDto)
                 .toList();
+    }
+
+    public ResponseEntity<String> uploadProductImage(@NotNull MultipartFile file){
+        if (file.isEmpty()) {
+            System.out.println(">>> Файл пустой");
+            return ResponseEntity.badRequest().body("Файл пустой");
+        }
+
+        try {
+            String filename = UUID.randomUUID() + "_" + file.getOriginalFilename();
+            Path savePath = Paths.get("uploads/products", filename);
+
+            System.out.println(">>> Пытаемся создать путь: " + savePath.toAbsolutePath());
+
+            Files.createDirectories(savePath.getParent());
+            file.transferTo(savePath.toFile());
+
+            String relativeUrl = "uploads/products/" + filename;
+            System.out.println(">>> Загружено успешно: " + relativeUrl);
+
+            return ResponseEntity.ok(relativeUrl);
+        } catch (IOException e) {
+            e.printStackTrace();  // Покажет, ЧТО именно сломалось
+            return ResponseEntity.status(500).body("Ошибка загрузки");
+        }
     }
 }

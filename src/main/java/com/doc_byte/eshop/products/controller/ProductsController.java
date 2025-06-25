@@ -1,5 +1,6 @@
 package com.doc_byte.eshop.products.controller;
 
+import com.doc_byte.eshop.orders.service.OrdersService;
 import com.doc_byte.eshop.products.dto.CreateProductRequest;
 import com.doc_byte.eshop.products.dto.GetAllProducts;
 import com.doc_byte.eshop.products.dto.UpdateProductRequest;
@@ -9,11 +10,19 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/products")
@@ -74,5 +83,16 @@ public class ProductsController {
     })
     public ResponseEntity<List<GetAllProducts>> getAllProducts(){
         return ResponseEntity.ok(productsService.getAllProducts());
+    }
+
+    @PostMapping("/product-image")
+    @Operation(summary = "Загрузка изображения на сервер")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Список тоаров получен"),
+            @ApiResponse(responseCode = "403", description = "Доступ запрещен"),
+            @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
+    })
+    public ResponseEntity<String> uploadProductImage(@RequestParam("file") @NotNull MultipartFile file) {
+        return productsService.uploadProductImage(file);
     }
 }

@@ -3,6 +3,7 @@ package com.doc_byte.eshop.orders.dto.mapper;
 import com.doc_byte.eshop.orders.dto.AllOrders;
 import com.doc_byte.eshop.orders.dto.OrderedProductDTO;
 import com.doc_byte.eshop.orders.model.OrderItems;
+import com.doc_byte.eshop.orders.model.OrderStatus;
 import com.doc_byte.eshop.orders.model.Orders;
 import com.doc_byte.eshop.orders.repository.OrderItemsRepository;
 import com.doc_byte.eshop.products.dto.ProductDTO;
@@ -34,10 +35,23 @@ public class OrderMapper {
         return new AllOrders(
                 order.getId(),
                 new UserIdDTO(order.getUser().getId()),
-                order.getStatus(),
+                translatePending(order.getStatus()),
                 order.getCreatedAt(),
                 orderedProducts,
                 order.getTotalPrice()
         );
+    }
+
+    private @NotNull String translatePending(@NotNull OrderStatus status){
+        return switch (status) {
+            case SHIPPED ->
+                    "Отправлен";
+            case PAID ->
+                    "Доставлен";
+            case CANCELLED ->
+                    "Отменен";
+            default ->
+                    "Оформлен";
+        };
     }
 }

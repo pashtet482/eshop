@@ -13,7 +13,7 @@ import java.util.List;
 
 public record AllOrders(Long id,
                         UserIdDTO user,
-                        OrderStatus status,
+                        String status,
                         Instant createdAt,
                         List<OrderedProductDTO> orderedProductDTO,
                         BigDecimal totalPrice) {

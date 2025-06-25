@@ -9,9 +9,11 @@ import org.springframework.stereotype.Component;
 public class UserMapper {
     public GetAllUsers toDto(@NotNull User user) {
         return new GetAllUsers(
+                user.getId(),
                 user.getUsername(),
                 user.getCreatedAt(),
                 user.getEmail(),
+                user.getRole(),
                 user.getLastUsernameChange()
         );
     }
