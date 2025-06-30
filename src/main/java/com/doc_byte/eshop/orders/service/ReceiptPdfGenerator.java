@@ -1,5 +1,6 @@
 package com.doc_byte.eshop.orders.service;
 
+import com.doc_byte.eshop.exceptions.PdfGenerationException;
 import com.itextpdf.kernel.colors.ColorConstants;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.PdfDocument;
@@ -19,6 +20,9 @@ import org.springframework.stereotype.Component;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -34,40 +38,44 @@ public class ReceiptPdfGenerator {
             PdfDocument pdf = new PdfDocument(writer);
             Document document = new Document(pdf);
 
-            String fontPath = "src/main/resources/fonts/arial.ttf";
-            PdfFont font = PdfFontFactory.createFont(fontPath);
+            String fontRelativePath = "../fonts/arial.ttf";
+            Path fontAbsolutePath = Paths.get(System.getProperty("user.dir")).resolve(fontRelativePath).normalize();
+            PdfFont font = PdfFontFactory.createFont(fontAbsolutePath.toString());
             document.setFont(font);
 
             try {
-                String imagePath = "src/main/resources/static/logo.png";
-                com.itextpdf.layout.element.Image logo = new com.itextpdf.layout.element.Image(
-                        com.itextpdf.io.image.ImageDataFactory.create(imagePath)
-                ).scaleToFit(60, 60);
+                InputStream imageStream = getClass().getClassLoader().getResourceAsStream("static/logo.png");
+                if (imageStream != null) {
+                    byte[] imageBytes = imageStream.readAllBytes();
+                    com.itextpdf.layout.element.Image logo = new com.itextpdf.layout.element.Image(
+                            com.itextpdf.io.image.ImageDataFactory.create(imageBytes)
+                    ).scaleToFit(60, 60);
 
-                Table headerTable = new Table(new float[]{1, 4});
-                headerTable.setWidth(UnitValue.createPercentValue(100));
+                    Table headerTable = new Table(new float[]{1, 4});
+                    headerTable.setWidth(UnitValue.createPercentValue(100));
 
-                Cell logoCell = new Cell().add(logo)
-                        .setBorder(null)
-                        .setVerticalAlignment(com.itextpdf.layout.properties.VerticalAlignment.MIDDLE);
-                headerTable.addCell(logoCell);
+                    Cell logoCell = new Cell().add(logo)
+                            .setBorder(null)
+                            .setVerticalAlignment(com.itextpdf.layout.properties.VerticalAlignment.MIDDLE);
+                    headerTable.addCell(logoCell);
 
-                Paragraph title = new Paragraph("DocByte\nинтернет-магазин техники")
-                        .setFontSize(14)
-                        .setBold()
-                        .setMargin(0)
-                        .setMultipliedLeading(1.2f);
+                    Paragraph title = new Paragraph("DocByte\nинтернет-магазин техники")
+                            .setFontSize(14)
+                            .setBold()
+                            .setMargin(0)
+                            .setMultipliedLeading(1.2f);
 
-                Cell titleCell = new Cell().add(title)
-                        .setBorder(null)
-                        .setVerticalAlignment(com.itextpdf.layout.properties.VerticalAlignment.MIDDLE);
+                    Cell titleCell = new Cell().add(title)
+                            .setBorder(null)
+                            .setVerticalAlignment(com.itextpdf.layout.properties.VerticalAlignment.MIDDLE);
 
-                headerTable.addCell(titleCell);
-                document.add(headerTable);
+                    headerTable.addCell(titleCell);
+                    document.add(headerTable);
 
-                document.add(new Paragraph("\n"));
-
+                    document.add(new Paragraph("\n"));
+                }
             } catch (Exception ignored) {
+                //Ignoring logo
             }
 
             Paragraph header = new Paragraph("Чек заказа #" + order.getId())
@@ -80,7 +88,7 @@ public class ReceiptPdfGenerator {
             ZoneId zoneId = ZoneId.of("Europe/Moscow");
             String formattedDate = order.getCreatedAt()
                     .atZone(zoneId)
-                    .format(DateTimeFormatter.ofPattern("dd MMMM yyyy, HH:mm", Locale.of("ru", "RU")));
+                    .format(DateTimeFormatter.ofPattern("dd MMMM yyyy, HH:mm", Locale.forLanguageTag("ru-RU")));
 
             Paragraph orderInfo = new Paragraph()
                     .add("Дата: " + formattedDate + "\n")
@@ -94,7 +102,7 @@ public class ReceiptPdfGenerator {
             Table table = new Table(columnWidths);
             table.setWidth(UnitValue.createPercentValue(100));
 
-            // Заголовки
+            // Заголовки таблицы
             table.addHeaderCell(new Cell().add(new Paragraph("Товар").setBold()).setBackgroundColor(ColorConstants.LIGHT_GRAY));
             table.addHeaderCell(new Cell().add(new Paragraph("Кол-во").setBold()).setBackgroundColor(ColorConstants.LIGHT_GRAY).setTextAlignment(TextAlignment.CENTER));
             table.addHeaderCell(new Cell().add(new Paragraph("Цена, руб").setBold()).setBackgroundColor(ColorConstants.LIGHT_GRAY).setTextAlignment(TextAlignment.RIGHT));
@@ -128,23 +136,17 @@ public class ReceiptPdfGenerator {
             return out.toByteArray();
 
         } catch (IOException e) {
-            throw new RuntimeException("Ошибка генерации PDF", e);
+            throw new PdfGenerationException("Ошибка генерации PDF", e);
         }
     }
-
 
     @Contract(pure = true)
     private @NotNull String translatePending(@NotNull String status){
         return switch (status) {
-            case "SHIPPED" ->
-                    "Отправлен";
-            case "DELIVERED" ->
-                    "Доставлен";
-            case "CANCELLED" ->
-                    "Отменен";
-            default ->
-                    "Оформлен";
+            case "SHIPPED" -> "Отправлен";
+            case "DELIVERED" -> "Доставлен";
+            case "CANCELLED" -> "Отменен";
+            default -> "Оформлен";
         };
     }
 }
-

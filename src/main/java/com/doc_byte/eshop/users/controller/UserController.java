@@ -10,7 +10,6 @@ import jakarta.validation.Valid;
 import javafx.util.Pair;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +18,13 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
-    @GetMapping
+    @GetMapping("/get-all-users")
     @Operation(summary = "Вывести всех пользователей")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Список пользователей получен"),
@@ -50,6 +49,7 @@ public class UserController {
 
         if (user != null) {
             return ResponseEntity.ok(Map.of(
+                    "userId", user.getId(),
                     "username", user.getUsername(),
                     "isAdmin", user.getRole()
             ));
@@ -161,8 +161,6 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "Внутренняя ошибка сервера")
     })
     public void changeUserRole(@RequestBody @NotNull ChangeUserRole changeUserRole){
-        System.out.println("Email: " + changeUserRole.email());
-        System.out.println("Role: " + changeUserRole.role());
         userService.changeUserRole(changeUserRole);
     }
 }

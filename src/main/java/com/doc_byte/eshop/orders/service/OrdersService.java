@@ -18,11 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.List;
 
@@ -76,24 +72,6 @@ public class OrdersService {
 
         order.setTotalPrice(totalPrice);
         orderRepository.save(order);
-
-        List<OrderItems> items = orderItemsRepository.findByOrderId(order.getId());
-        byte[] pdf = receiptPdfGenerator.generate(order, items);
-
-        try{
-            Files.createDirectories(Paths.get("receipts"));
-        }
-        catch (IOException e){
-            throw new RuntimeException("Ошибка при создании директроии", e);
-        }
-
-        String filePath = "receipts/order_" + order.getId() + ".pdf";
-        try (FileOutputStream fos = new FileOutputStream(filePath)) {
-            fos.write(pdf);
-            orderRepository.save(order);
-        } catch (IOException e) {
-            throw new RuntimeException("Ошибка при сохранении чека", e);
-        }
     }
 
     public void changeStatus(@NotNull ChangeStatusDTO request){

@@ -74,4 +74,10 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, "Внутреняя ошибка сервера"));
     }
+
+    @ExceptionHandler(PdfGenerationException.class)
+    public ResponseEntity<String> handlePdfGenerationException(@NotNull PdfGenerationException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body("Ошибка при создании PDF: " + ex.getCause().getMessage());
+    }
 }

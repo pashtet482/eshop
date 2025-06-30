@@ -78,7 +78,7 @@ public class OrdersController {
         return ResponseEntity.ok(ordersService.userOrders(userId));
     }
 
-    @GetMapping
+    @GetMapping("/get-all-orders")
     @Operation(summary = "Вывод все заказазов (для админа)")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Данные успешно выведены"),
