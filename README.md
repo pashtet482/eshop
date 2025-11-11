@@ -90,13 +90,3 @@ eshop/
 │   ├── src/
 │   └── ...
 ```
-
-## 🧑‍💻 Author
-
-**pashtet482**  
-🔗 [github.com/pashtet482](https://github.com/pashtet482)
-
----
-
-💬 Found a bug or have a suggestion?  
-Feel free to open an issue or a pull request.
