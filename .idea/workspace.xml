@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a90b77b4-1d9b-4cb9-8df2-8ba7df18f870" name="Изменения" comment="s" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Record" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="main" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;pashtet482&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/pashtet482/eshop.git&quot;,
+    &quot;accountId&quot;: &quot;abca5f6a-a72d-4aad-a0df-883626b45476&quot;
+  }
+}</component>
+  <component name="GradleModuleStateConfig" initialized="true" />
+  <component name="OpenIdeProjectLocalState">
+    <option name="firstOpen" value="false" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2xsOPmGQWjLq52kiaSBiTjSO8FR" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+    "Spring Boot приложение.EShopApplication.executor": "Run",
+    "git-widget-placeholder": "main",
+    "ignore.preview.features.used": "true",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "D:/JavaProjects/eshop/uploads/products",
+    "project.structure.last.edited": "Проект",
+    "project.structure.proportion": "0.08203447",
+    "project.structure.side.proportion": "0.2",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "configurable.group.build"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\JavaProjects\eshop\uploads\products" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="D:\JavaProjects\eshop\backend" />
+      <recent name="D:\JavaProjects\eshop" />
+      <recent name="D:\JavaProjects\eshop\src\main\resources\static" />
+      <recent name="D:\JavaProjects\eshop\public" />
+    </key>
+    <key name="ExtractSuperBase.RECENT_KEYS">
+      <recent name="com.doc_byte.eshop" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="EShopApplication" type="AmplicodeSpringBootApplication">
+      <option name="ALTERNATIVE_JRE_PATH" value="21" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.doc_byte.eshop.EShopApplication" />
+      <module name="e-shop" />
+      <option name="profiles">
+        <list>
+          <option value="" />
+        </list>
+      </option>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="на уровне приложения" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Задача по умолчанию">
+      <changelist id="a90b77b4-1d9b-4cb9-8df2-8ba7df18f870" name="Изменения" comment="" />
+      <created>1748723292599</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1748723292599</updated>
+    </task>
+    <task id="LOCAL-00001" summary="сделал создание, обновление, удалние категорий">
+      <option name="closed" value="true" />
+      <created>1749510700664</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749510700664</updated>
+    </task>
+    <task id="LOCAL-00002" summary="сделано создание заказа">
+      <option name="closed" value="true" />
+      <created>1749839034772</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1749839034772</updated>
+    </task>
+    <task id="LOCAL-00003" summary="генерация PDF, нет русских букв">
+      <option name="closed" value="true" />
+      <created>1749846354331</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1749846354331</updated>
+    </task>
+    <task id="LOCAL-00004" summary="новый дизайн чека, его скачивание, вывод все категорий, изменеие статуса заказа">
+      <option name="closed" value="true" />
+      <created>1750376519486</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1750376519486</updated>
+    </task>
+    <task id="LOCAL-00005" summary="метод для входа акк">
+      <option name="closed" value="true" />
+      <created>1750463092068</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1750463092068</updated>
+    </task>
+    <task id="LOCAL-00006" summary="поменял вывод категорий">
+      <option name="closed" value="true" />
+      <created>1750551980513</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1750551980513</updated>
+    </task>
+    <task id="LOCAL-00007" summary="добавил, вход и вывод данных о пользователе. поменял ответы на сервер в виде JSON">
+      <option name="closed" value="true" />
+      <created>1750622150584</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1750622150584</updated>
+    </task>
+    <task id="LOCAL-00008" summary="добавил, вход и вывод данных о пользователе. поменял ответы на сервер в виде JSON">
+      <option name="closed" value="true" />
+      <created>1750622176967</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1750622176967</updated>
+    </task>
+    <task id="LOCAL-00009" summary="поменял в выводе всех продуктов айди категории на фул категорию для вывода на карточки">
+      <option name="closed" value="true" />
+      <created>1750636118331</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1750636118331</updated>
+    </task>
+    <task id="LOCAL-00010" summary="поменял в выводе всех продуктов айди категории на фул категорию для вывода на карточки">
+      <option name="closed" value="true" />
+      <created>1750636350641</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1750636350641</updated>
+    </task>
+    <task id="LOCAL-00011" summary="вывод заказов на сайте">
+      <option name="closed" value="true" />
+      <created>1750724849149</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1750724849149</updated>
+    </task>
+    <task id="LOCAL-00012" summary="появилась админ панель, пытаюсь сделать добавлние изображения и crud">
+      <option name="closed" value="true" />
+      <created>1750811641353</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1750811641353</updated>
+    </task>
+    <task id="LOCAL-00013" summary="добработал админ панель">
+      <option name="closed" value="true" />
+      <created>1750890770116</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1750890770116</updated>
+    </task>
+    <task id="LOCAL-00014" summary="полностю рабтает">
+      <option name="closed" value="true" />
+      <created>1751312292897</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1751312292897</updated>
+    </task>
+    <task id="LOCAL-00015" summary="полностю рабтает">
+      <option name="closed" value="true" />
+      <created>1760477945669</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1760477945669</updated>
+    </task>
+    <task id="LOCAL-00016" summary="s">
+      <option name="closed" value="true" />
+      <created>1760479037485</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1760479037485</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="026733f0-4b34-4dd5-9789-184e52ccf358" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="026733f0-4b34-4dd5-9789-184e52ccf358">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="сделал создание, обновление, удалние категорий" />
+    <MESSAGE value="сделано создание заказа" />
+    <MESSAGE value="генерация PDF, нет русских букв" />
+    <MESSAGE value="новый дизайн чека, его скачивание, вывод все категорий, изменеие статуса заказа" />
+    <MESSAGE value="метод для входа акк" />
+    <MESSAGE value="поменял вывод категорий" />
+    <MESSAGE value="добавил, вход и вывод данных о пользователе. поменял ответы на сервер в виде JSON" />
+    <MESSAGE value="поменял в выводе всех продуктов айди категории на фул категорию для вывода на карточки" />
+    <MESSAGE value="вывод заказов на сайте" />
+    <MESSAGE value="появилась админ панель, пытаюсь сделать добавлние изображения и crud" />
+    <MESSAGE value="добработал админ панель" />
+    <MESSAGE value="полностю рабтает" />
+    <MESSAGE value="s" />
+    <option name="LAST_COMMIT_MESSAGE" value="s" />
+  </component>
+</project>
